@@ -93,7 +93,7 @@ DECLARE @Salary INT = 76.9;
 SELECT @Salary, FORMAT(@Salary, N'F'), FORMAT(@Salary, N'C', N'en-IN');
 
 ----------DATE and TIME FUnctions---------
-----CURRENT_TIMESTAMP
+----CURRENT_TIMESTAMP----Returns the current system date and time without the time zone part.
 select CURRENT_TIMESTAMP;
 
 ----DATEADD()
@@ -114,6 +114,32 @@ select DATEDIFF(HOUR,'2025-01-21 01:20','2026-01-21 02:30');
 
 ----DATEFROMPARTS()
 select DATEFROMPARTS(2025,6,21);
+
+
+---GETUTCDATE()--- function returns the current UTC time
+DECLARE 
+     @current_time DATETIME,
+     @utc_time DATETIME;
+SET @current_time=GETDATE()
+set	@utc_time=GETUTCDATE()
+select  convert(varchar(45),@current_time) as 'server local time'
+select  convert(varchar(45),@utc_time) as 'server utc time'
+select  convert(varchar(45),DATEDIFF(hour,@utc_time,@current_time)) as 'server time zone';
+go
+
+----DATENAME()---Returns a date part of a date as a character string
+select DATENAME(year,GETDATE())
+select DATENAME(month,GETDATE())
+select DATENAME(day,GETDATE())
+
+---DATEPART()---Returns a date part of a date as an integer number
+select DATEPART(year,GETDATE())
+select DATEPART(month,GETDATE())
+select DATEPART(day,GETDATE())
+
+
+
+
 
 
 

@@ -85,3 +85,42 @@ where ProductID=4;
 delete from Customers where CustomerID not in
 (select distinct CustomerID from Orders)
 
+
+
+----------------------------------------
+----------------------------------------
+----------Employee-------------------
+
+CREATE TABLE Department (
+    DepartmentID INT PRIMARY KEY,           -- Unique identifier for each department
+    DepartmentName NVARCHAR(100) NOT NULL, -- Name of the department
+    Location NVARCHAR(100),                -- Location of the department
+    ManagerID INT                          -- ID of the manager (FK to Employee table, if exists)
+);
+
+INSERT INTO Department (DepartmentID, DepartmentName, Location, ManagerID)
+VALUES 
+(1, N'Human Resources', N'New York', 101),
+(2, N'Finance', N'Chicago', 102),
+(3, N'IT', N'San Francisco', 103),
+(4, N'Sales', N'Dallas', 104),
+(5, N'Marketing', N'Los Angeles', 105);
+
+
+--- Fetch employees with a salary greater than the average salary
+select * from Employee where Salary>
+(select avg(Salary) from Employee)
+
+--- Insert employees from another department into a temporary table
+insert into TempEmployee (EmployeeID, EmployeeName, DepartmentID)
+select Id, Name, DepartmentId
+from Employee
+where DepartmentId = (select DepartmentId from Department where DepartmentName = 'Sales');
+
+--- Update employee salaries based on the department name
+update Employee set Salary=Salary+500
+where DepartmentId in (
+select DepartmentId from Department where DepartmentName='New York');
+
+---
+

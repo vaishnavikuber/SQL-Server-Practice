@@ -150,14 +150,14 @@ as
 begin
 	begin try
 		-----check if account axists
-		if not exists(select AccountID from Accounts where AccountID=@AccountID)
+		if not exists(select 1 from dbo.Accounts where AccountID=@AccountID)
 		begin
 			throw 50004,'Account not found.',1;
 		end
 
 		----check if balance is sufficient
-		declare @Balance Decimal(10,2);
-		set @Balance=select Balance from Accounts Where AccountID=@AccountID;
+		declare @Balance int;
+		set @Balance=(select Balance from Accounts Where AccountID=@AccountID);
 
 		if @Balance<@amount
 		begin
@@ -180,6 +180,10 @@ begin
 		@ErrorState=ERROR_STATE();
 		--rethrow the error
 		throw @ErrorSeverity,@ErrorMessage,@ErrorState;
-	end catch
+	end catch;
 
 end;
+
+exec spWithdrawAmount 2096722608,1000;
+
+
